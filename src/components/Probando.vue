@@ -59,7 +59,7 @@ export default {
   methods: {
     deleteItem(item) {
       const index = this.serverDatas.indexOf(item);
-      confirm("ガチで削除しますか") && this.serverDatas.splice(index, 1);
+      window.confirm("ガチで削除しますか") && this.serverDatas.splice(index, 1);
     },
   },
   mounted() {
