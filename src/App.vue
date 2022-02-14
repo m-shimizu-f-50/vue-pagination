@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <Probando />
+    <v-app>
+      <Probando />
+    </v-app>
   </div>
 </template>
 
