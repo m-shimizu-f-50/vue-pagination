@@ -1,2 +1,2 @@
 # vue-pagination
-Created with CodeSandbox
+Vuetifyを用いたページネーションの実装
