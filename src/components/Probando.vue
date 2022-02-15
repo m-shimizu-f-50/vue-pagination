@@ -1,14 +1,28 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="10">
-        <v-data-table :headers="headers" :items="serverDatas">
+      <v-col cols="12">
+        <v-data-table
+          :headers="headers"
+          :items="serverDatas"
+          　hide-default-footer
+        >
           <template v-slot:[`item.delete`]="{ item }">
             <v-btn small color="error" @click="deleteItem(item)"> 削除 </v-btn>
           </template>
         </v-data-table>
       </v-col>
     </v-row>
+    <div class="table-footer text-center pt-2">
+      <span>全 1件</span>
+      <v-pagination
+        v-model="page"
+        class="ml-4"
+        circle
+        :length="pageCount"
+        @input="pageChange"
+      ></v-pagination>
+    </div>
   </v-container>
 </template>
 
@@ -53,13 +67,15 @@ export default {
           age: 10,
         },
       ],
+      page: 1,
+      pageCount: 1,
     };
   },
 
   methods: {
     deleteItem(item) {
       const index = this.serverDatas.indexOf(item);
-      window.confirm("ガチで削除しますか") && this.serverDatas.splice(index, 1);
+      window.confirm("本当に削除しますか") && this.serverDatas.splice(index, 1);
     },
   },
   mounted() {
@@ -77,3 +93,13 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.table-footer {
+  display: flex;
+  bottom: 0;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+</style>
