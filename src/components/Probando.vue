@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-data-table
           :headers="headers"
-          :items="serverDatas"
+          :items="displayItems"
           　hide-default-footer
         >
           <template v-slot:[`item.delete`]="{ item }">
@@ -48,27 +48,18 @@ export default {
           sortable: false,
         },
       ],
+
+      // page ・・・現在のページの場所を表している
+      // pageCount・・・ページの数を表している
+      // pageSize・・・1ページに表示させるサイズを設定
+      // serverDatas・・・APIから取得したデータを格納する
+      // displayItems・・・itemsから抽出した実際に画面に表示させるitemsを格納する
       serverDatas: [],
 
-      items: [
-        {
-          id: 1,
-          name: "高田健志",
-          age: 33,
-        },
-        {
-          id: 2,
-          name: "横山緑",
-          age: 42,
-        },
-        {
-          id: 3,
-          name: "山田太郎",
-          age: 10,
-        },
-      ],
+      displayItems: [],
       page: 1,
       pageCount: 1,
+      pageSize: 5,
     };
   },
 
@@ -77,12 +68,22 @@ export default {
       const index = this.serverDatas.indexOf(item);
       window.confirm("本当に削除しますか") && this.serverDatas.splice(index, 1);
     },
+    pageChange(pageNumber) {
+      this.displayItems = this.serverDatas.slice(
+        this.pageSize * (pageNumber - 1),
+        this.pageSize * pageNumber
+      );
+    },
   },
   mounted() {
     axios
       .get("https://jsonplaceholder.typicode.com/users")
       .then((res) => {
         this.serverDatas = res.data;
+        // ページネーションの各値を更新
+        this.displayItems = this.serverDatas.slice(0, this.pageSize);
+        this.totalCount = this.serverDatas.length;
+        this.pageCount = Math.ceil(this.serverDatas.length / this.pageSize);
       })
       .catch((e) => {
         console.log(e);
